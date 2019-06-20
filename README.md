@@ -177,7 +177,7 @@ This object requires this values:
 * `DiagonalHeadDiameter` - head diameter of bolt(m) [double]
 * `HeadHeight` - height head of bolt(m) [double]
 * `BoreHole` - hole for bolt(m) [double]
-* `TensileStressArea` - tensile stress area(cm2) [double]
+* `TensileStressArea` - tensile stress area(mm2) [double]
 * `NutThickness` - nut thickness(m) [double]
 * `AnchorLen` - lenght of bolt/anchor(m) [double]
 * `Material` - name of already defined material in IOM [string]
@@ -199,7 +199,7 @@ IdeaRS.OpenModel.Connection.BoltGrid boltGrid = new IdeaRS.OpenModel.Connection.
   DiagonalHeadDiameter = 0.026,
   HeadHeight = 0.01,
   BoreHole = 0.018,
-  TensileStressArea = 0.157,
+  TensileStressArea = 157,
   NutThickness = 0.013,
   AnchorLen = 0.05,
   Material = "8.8",
@@ -243,3 +243,428 @@ boltGrid.ConnectedPartIds = new List<string>() { beam2Data.OriginalModelId, plat
 (openModel.Connections[0].BoltGrids ?? (openModel.Connections[0].BoltGrids = new List<IdeaRS.OpenModel.Connection.BoltGrid>())).Add(boltGrid);
 ```
 ![Bolts](images/bolts.PNG?raw=true "Bolts")
+
+## Welds
+### Weld 
+By [```IdeaRS.OpenModel.Connection.WeldData```](https://idea-statica.github.io/iom/iom-api/html/c8c8c54b-d021-d04f-85a3-8e410e7a0170.htm) you can define weld. 
+This object requires this values:
+* `Id` - unique identificator [int]
+* `ConnectedPartIds` - list of identificators object which want to welded together [string]
+* `Start` - point of start weld defined in global coordinate system [[Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)]
+* `End` - point of end weld defined in global coordinate system [[Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)]
+* `Thickness` - thickness of weld defined in metric system(m) [double]
+* `WeldType` - type of weld [[WeldType](https://idea-statica.github.io/iom/iom-api/html/722ccc5e-a301-19b2-2da0-00969bf409b3.htm)]
+
+#### Example of create stiffeners with welds:
+
+```#C
+//add plate 2
+IdeaRS.OpenModel.Connection.PlateData plateData2 = new IdeaRS.OpenModel.Connection.PlateData
+{
+Name = "P2",
+Thickness = 0.02,
+Id = 12,
+Material = "S355",
+OriginalModelId = "12",
+Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
+{
+	X = -2.103,
+	Y = 2.88,
+	Z = 2.75
+},
+AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 1,
+	Y = 0,
+	Z = 0
+},
+AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 1,
+	Z = 0
+},
+AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 0,
+	Z = 1
+},
+Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
+};
+
+(openModel.Connections[0].Plates ?? (openModel.Connections[0].Plates = new List<IdeaRS.OpenModel.Connection.PlateData>())).Add(plateData2);
+//add weld between memeber 2 and plate 2 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 31,
+ConnectedPartIds = new List<string>() {  plateData2.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 2.995,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 2.995,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+(openModel.Connections[0].Welds ?? (openModel.Connections[0].Welds = new List<IdeaRS.OpenModel.Connection.WeldData>())).Add(weldData);
+
+//add weld3 between memeber 2 and plate 2 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData3 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 33,
+ConnectedPartIds = new List<string>() { plateData2.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 2.90,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 2.90,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData3);
+
+//add weld4 between memeber 2 and plate 2 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData4 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 34,
+ConnectedPartIds = new List<string>() { plateData2.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 2.90,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 2.90,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData4);
+
+//add plate 3
+IdeaRS.OpenModel.Connection.PlateData plateData3 = new IdeaRS.OpenModel.Connection.PlateData
+{
+Name = "P3",
+Thickness = 0.02,
+Id = 13,
+Material = "S355",
+OriginalModelId = "13",
+Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
+{
+	X = -2.103,
+	Y = 2.88,
+	Z = 3.1
+},
+AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 1,
+	Y = 0,
+	Z = 0
+},
+AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 1,
+	Z = 0
+},
+AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 0,
+	Z = 1
+},
+Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
+};
+openModel.Connections[0].Plates.Add(plateData3);
+
+//add weld between memeber 2 and plate 3 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData2 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 32,
+ConnectedPartIds = new List<string>() { plateData3.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 2.995,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 2.995,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData2);
+
+//add weld5 between memeber 2 and plate 3 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData5 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 35,
+ConnectedPartIds = new List<string>() { plateData3.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 2.90,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 2.90,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData5);
+
+//add weld6 between memeber 2 and plate 3 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData6 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 36,
+ConnectedPartIds = new List<string>() { plateData3.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 2.90,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 2.90,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData6);
+
+//add plate 4
+IdeaRS.OpenModel.Connection.PlateData plateData4 = new IdeaRS.OpenModel.Connection.PlateData
+{
+Name = "P4",
+Thickness = 0.02,
+Id = 14,
+Material = "S355",
+OriginalModelId = "14",
+Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
+{
+	X = -2.103,
+	Y = 3.12,
+	Z = 2.75
+},
+AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 1,
+	Y = 0,
+	Z = 0
+},
+AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = -1,
+	Z = 0
+},
+AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 0,
+	Z = 1
+},
+Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
+};
+openModel.Connections[0].Plates.Add(plateData4);
+
+//add weld7 between memeber 2 and plate 4 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData7 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 37,
+ConnectedPartIds = new List<string>() { plateData4.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 3.005,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 3.005,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData7);
+
+//add weld8 between memeber 2 and plate 4 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData8 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 38,
+ConnectedPartIds = new List<string>() { plateData4.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 3.1,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 3.1,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData8);
+
+//add weld9 between memeber 2 and plate 4 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData9 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 39,
+ConnectedPartIds = new List<string>() { plateData4.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 3.1,
+	Z = 2.76
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 3.1,
+	Z = 2.76
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData9);
+
+//add plate 5
+IdeaRS.OpenModel.Connection.PlateData plateData5 = new IdeaRS.OpenModel.Connection.PlateData
+{
+Name = "P5",
+Thickness = 0.02,
+Id = 15,
+Material = "S355",
+OriginalModelId = "15",
+Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
+{
+	X = -2.103,
+	Y = 3.12,
+	Z = 3.1
+},
+AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 1,
+	Y = 0,
+	Z = 0
+},
+AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = -1,
+	Z = 0
+},
+AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
+{
+	X = 0,
+	Y = 0,
+	Z = 1
+},
+Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
+};
+openModel.Connections[0].Plates.Add(plateData5);
+
+//add weld10 between memeber 2 and plate 5 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData10 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 40,
+ConnectedPartIds = new List<string>() { plateData5.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 3.005,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2,
+	Y = 3.005,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData10);
+
+//add weld11 between memeber 2 and plate 5 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData11 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 41,
+ConnectedPartIds = new List<string>() { plateData5.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 3.10,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -2.103,
+	Y = 3.10,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData11);
+
+//add weld12 between memeber 2 and plate 5 - stiffener
+IdeaRS.OpenModel.Connection.WeldData weldData12 = new IdeaRS.OpenModel.Connection.WeldData()
+{
+Id = 46,
+ConnectedPartIds = new List<string>() { plateData5.OriginalModelId, beam2Data.OriginalModelId },
+Start = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 3.10,
+	Z = 3.11
+},
+End = new IdeaRS.OpenModel.Geometry3D.Point3D()
+{
+	X = -1.897,
+	Y = 3.10,
+	Z = 3.11
+},
+Thickness = 0.004,
+WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
+};
+openModel.Connections[0].Welds.Add(weldData12);
+```
+
+![Stiffeners With Welds](images/stiffenersWithWelds.PNG?raw=true "Stiffeners With Welds")
