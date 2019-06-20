@@ -1,4 +1,8 @@
 # iomTestDoc
+## Connection
+To create a connection you need first define a connection point
+
+#### Example of create connection:
 ```C#
 IdeaRS.OpenModel.Connection.ConnectionPoint connection = new IdeaRS.OpenModel.Connection.ConnectionPoint();
 IdeaRS.OpenModel.Geometry3D.Point3D point = new IdeaRS.OpenModel.Geometry3D.Point3D() {
@@ -10,9 +14,7 @@ point.Id = openModel.GetMaxId(point) + 1;
 point.Name = point.Id.ToString();
 
 openModel.Point3D.Add(point);
-```
-
-```C#
+//add connection to IOM
 connection.Node = new ReferenceElement(point);
 connection.Name = point.Name;
 connection.Id = openModel.GetMaxId(connection) + 1;
@@ -27,10 +29,25 @@ Inicialize Beam data
 ```C#
 openModel.Connections[0].Beams = new List<IdeaRS.OpenModel.Connection.BeamData>();
 ```
+### Beam
+By [```IdeaRS.OpenModel.Connection.BeamData```](https://idea-statica.github.io/iom/iom-api/html/9361a78c-621f-87b4-c32c-4432d673d3fe.htm) you can define aditional infomation about beam. 
+This object requires this values:
+* `Id` - unique identificator [int]
+* `OriginalModelId` - unique identificator from original model [string]
+* `IsAdded` - beam is as stiffening member [bool]
+* `MirrorY` - mirror the cross-section acccording to its XY plane [bool]
+* `RefLineInCenterOfGravity` - reference line of cross-section is in center of gravity [bool]
 
-Add member1D 1
+By [```IdeaRS.OpenModel.Connection.ConnectedMember```](https://idea-statica.github.io/iom/iom-api/html/b41a9e1a-77eb-b644-c90c-101d95a25cdc.htm) you can define aditional infomation about beam. 
+This object requires this values:
+* `Id` - unique identificator [int]
+* `MemberId` - reference to member1D represented beam [[ReferenceElement](https://idea-statica.github.io/iom/iom-api/html/9e905b1a-a8a6-ae75-4c62-221258514c0b.htm)]
+* `IsContinuous` - beam is continuous [bool]
 
+
+#### Example of create beam:
 ```C#
+//Add member1D 1
 IdeaRS.OpenModel.Connection.BeamData beam1Data = new IdeaRS.OpenModel.Connection.BeamData
 {
   Id = 1,
@@ -49,29 +66,27 @@ IdeaRS.OpenModel.Connection.ConnectedMember conMb = new IdeaRS.OpenModel.Connect
   IsContinuous = false,
 };
 connection.ConnectedMembers.Add(conMb);
-```
 
-Add member1D 3
+//Add member1D 3
 
-```C#
 var member3 = openModel.Member1D.Find(x => x.Id == 3);
-			IdeaRS.OpenModel.Connection.ConnectedMember conMb3 = new IdeaRS.OpenModel.Connection.ConnectedMember
-			{
-				Id = member3.Id,
-				MemberId = new ReferenceElement(member3),
-				IsContinuous = true,
-			};
-			connection.ConnectedMembers.Add(conMb3);
+IdeaRS.OpenModel.Connection.ConnectedMember conMb3 = new IdeaRS.OpenModel.Connection.ConnectedMember
+{
+	Id = member3.Id,
+	MemberId = new ReferenceElement(member3),
+	IsContinuous = true,
+};
+connection.ConnectedMembers.Add(conMb3);
 
-			IdeaRS.OpenModel.Connection.BeamData beam2Data = new IdeaRS.OpenModel.Connection.BeamData
-			{
-				Id = 3,
-				OriginalModelId = "3",
-				IsAdded = false,
-				MirrorY = false,
-				RefLineInCenterOfGravity = false,
-			};
-			openModel.Connections[0].Beams.Add(beam2Data);
+IdeaRS.OpenModel.Connection.BeamData beam2Data = new IdeaRS.OpenModel.Connection.BeamData
+{
+	Id = 3,
+	OriginalModelId = "3",
+	IsAdded = false,
+	MirrorY = false,
+	RefLineInCenterOfGravity = false,
+};
+openModel.Connections[0].Beams.Add(beam2Data);
 ```
 ![Beams](images/beams.PNG?raw=true "Beam")
 
@@ -256,41 +271,39 @@ This object requires this values:
 * `WeldType` - type of weld [[WeldType](https://idea-statica.github.io/iom/iom-api/html/722ccc5e-a301-19b2-2da0-00969bf409b3.htm)]
 
 #### Example of create stiffeners with welds:
-
 ```#C
-//add plate 2
 IdeaRS.OpenModel.Connection.PlateData plateData2 = new IdeaRS.OpenModel.Connection.PlateData
 {
-Name = "P2",
-Thickness = 0.02,
-Id = 12,
-Material = "S355",
-OriginalModelId = "12",
-Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
-{
-	X = -2.103,
-	Y = 2.88,
-	Z = 2.75
-},
-AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
-{
-	X = 1,
-	Y = 0,
-	Z = 0
-},
-AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
-{
-	X = 0,
-	Y = 1,
-	Z = 0
-},
-AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
-{
-	X = 0,
-	Y = 0,
-	Z = 1
-},
-Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
+	Name = "P2",
+	Thickness = 0.02,
+	Id = 12,
+	Material = "S355",
+	OriginalModelId = "12",
+	Origin = new IdeaRS.OpenModel.Geometry3D.Point3D
+	{
+		X = -2.103,
+		Y = 2.88,
+		Z = 2.75
+	},
+	AxisX = new IdeaRS.OpenModel.Geometry3D.Vector3D
+	{
+		X = 1,
+		Y = 0,
+		Z = 0
+	},
+	AxisY = new IdeaRS.OpenModel.Geometry3D.Vector3D
+	{
+		X = 0,
+		Y = 1,
+		Z = 0
+	},
+	AxisZ = new IdeaRS.OpenModel.Geometry3D.Vector3D
+	{
+		X = 0,
+		Y = 0,
+		Z = 1
+	},
+	Region = "M 0 0 L 0.206 0 L 0.206 0.105 L 0.195 0.115 L 0.011 0.115 L 0.0 0.105 L 0 0",
 };
 
 (openModel.Connections[0].Plates ?? (openModel.Connections[0].Plates = new List<IdeaRS.OpenModel.Connection.PlateData>())).Add(plateData2);
@@ -666,5 +679,4 @@ WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
 };
 openModel.Connections[0].Welds.Add(weldData12);
 ```
-
 ![Stiffeners With Welds](images/stiffenersWithWelds.PNG?raw=true "Stiffeners With Welds")
