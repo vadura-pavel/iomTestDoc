@@ -77,15 +77,16 @@ var member3 = openModel.Member1D.Find(x => x.Id == 3);
 
 ## Plates
 
-By [```IdeaRS.OpenModel.Connection.PlateData```](https://idea-statica.github.io/iom/iom-api/html/fa62da56-78d0-ae76-ec1a-543e2b77497f.htm) you can defined plate. This object require this values:
+By [```IdeaRS.OpenModel.Connection.PlateData```](https://idea-statica.github.io/iom/iom-api/html/fa62da56-78d0-ae76-ec1a-543e2b77497f.htm) you can define plate. 
+This object requires this values:
 * `Name`- name of plate [string]
 * `Id` - unique identificator [int]
 * `OriginalModelId` - unique identificator from original model [string]
 * `Material` - name of already defined material in IOM [string]
 * `Thickness` - thickness of plate defined in metric system(m) [double]
 * `Origin` - point of local coordinate system defined in global coordinate system [Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)
-* `AxisX` `AxisY` `AxisZ` - axixs of local cordinate system [Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)
-* `Region` - geomtry of plate descript by [SVG path](https://www.w3.org/TR/SVG/paths.html) [string]
+* `AxisX` `AxisY` `AxisZ` - axixs of local coordinate system [Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)
+* `Region` - geometry of plate descript by [SVG path](https://www.w3.org/TR/SVG/paths.html) [string]
 
 #### Example of create plate:
 ```C#
@@ -131,12 +132,11 @@ IdeaRS.OpenModel.Connection.PlateData plateData = new IdeaRS.OpenModel.Connectio
 
 ## Cuts
 ### Cut beam by beam or plate 
-By ```IdeaRS.OpenModel.Connection.CutBeamByBeamData``` you can defined cuting beam by beam or plate. This object require this values:
-* `CuttingObject`- Reference to beam or plate whitch is use for cutting [ReferenceElement]
-* `ModifiedObject`- Reference to beam whitch is modified by cutting [ReferenceElement]
-* `IsWeld`- Flags for welding cut [bool]
-
-![Cut Beam By Beam](images/cutBeamByPlate.PNG?raw=true "Cut Beam By Beam")
+By ```IdeaRS.OpenModel.Connection.CutBeamByBeamData``` you can define cuting beam by beam or plate. 
+This object requires this values:
+* `CuttingObject`- reference to beam or plate whitch is use for cutting [[ReferenceElement](https://idea-statica.github.io/iom/iom-api/html/9e905b1a-a8a6-ae75-4c62-221258514c0b.htm)]
+* `ModifiedObject`- reference to beam whitch is modified by cutting [[ReferenceElement](https://idea-statica.github.io/iom/iom-api/html/9e905b1a-a8a6-ae75-4c62-221258514c0b.htm)]
+* `IsWeld`- flags for welding cut [bool]
 
 #### Example of create cut beam by plate:
 ```#C
@@ -151,10 +151,13 @@ openModel.Connections[0].CutBeamByBeams = new List<IdeaRS.OpenModel.Connection.C
   }
 };
 ```
+![Cut Beam By Beam](images/cutBeamByPlate.PNG?raw=true "Cut Beam By Beam")
+
 ### Cut beam by workplane
-By [```IdeaRS.OpenModel.Connection.CutData```](https://idea-statica.github.io/iom/iom-api/html/ccc12bf8-7d60-c423-f975-b6cc90cf2b3c.htm) you can defined cuting beam by workplane. This object require this values:
-* `PlanePoint`- Point defined in global coordinate system define point where is workplane  [Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)
-* `NormalVector`- Normal vector of workplane [Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)
+By [```IdeaRS.OpenModel.Connection.CutData```](https://idea-statica.github.io/iom/iom-api/html/ccc12bf8-7d60-c423-f975-b6cc90cf2b3c.htm) you can define cuting beam by workplane.
+This object requires this values:
+* `PlanePoint`- point defines in global coordinate system place where is workplane  [Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)
+* `NormalVector`- normal vector of workplane [Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)
 
 #### Example of create cut beam by worplane:
 
@@ -167,7 +170,8 @@ CutData cutData = new CutData(){
 ```
 
 ## Bolts
-By [```IdeaRS.OpenModel.Connection.BoltGrid```](https://idea-statica.github.io/iom/iom-api/html/b9b49fac-1350-22fd-8ed4-9938ce6345d1.htm) you can defined bolts and connect objects. This object require this values:
+By [```IdeaRS.OpenModel.Connection.BoltGrid```](https://idea-statica.github.io/iom/iom-api/html/b9b49fac-1350-22fd-8ed4-9938ce6345d1.htm) you can define bolts and connect objects. 
+This object requires this values:
 * `Id` - unique identificator [int]
 * `Diameter` - diameter of bolt(m) [double]
 * `DiagonalHeadDiameter` - head diameter of bolt(m) [double]
@@ -175,12 +179,12 @@ By [```IdeaRS.OpenModel.Connection.BoltGrid```](https://idea-statica.github.io/i
 * `BoreHole` - hole for bolt(m) [double]
 * `TensileStressArea` - tensile stress area(cm2) [double]
 * `NutThickness` - nut thickness(m) [double]
-* `AnchorLen` - lenght of botl/anchor(m) [double]
+* `AnchorLen` - lenght of bolt/anchor(m) [double]
 * `Material` - name of already defined material in IOM [string]
 * `Standard` - standard of bolt [string]
 * `Origin` - point of local coordinate system defined in global coordinate system [[Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)]
-* `AxisX` `AxisY` `AxisZ` - axixs of local cordinate system [[Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)]
-* `Positions` - list of bolt positions defined by points in global coordinate system [[List Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)]
+* `AxisX` `AxisY` `AxisZ` - axis of local coordinate  system [[Vector3D](https://idea-statica.github.io/iom/iom-api/html/5789c2c7-c7a4-30f0-f1d0-cb971aeb37bc.htm)]
+* `Positions` - list of bolt positions define by points in global coordinate system [[List Point3D](https://idea-statica.github.io/iom/iom-api/html/20f596b7-3cd7-56ba-be81-c712cfd9f094.htm)]
 * `ConnectedPartIds` - list of identificators object which want to connect together [string]
 
 
