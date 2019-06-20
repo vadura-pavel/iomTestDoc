@@ -18,9 +18,7 @@ openModel.Point3D.Add(point);
 connection.Node = new ReferenceElement(point);
 connection.Name = point.Name;
 connection.Id = openModel.GetMaxId(connection) + 1;
-```
-## Add connection
-```C#
+
 openModel.Connections.Add(new IdeaRS.OpenModel.Connection.ConnectionData());
 openModel.AddObject(connection);
 ```
