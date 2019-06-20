@@ -73,6 +73,7 @@ var member3 = openModel.Member1D.Find(x => x.Id == 3);
 			};
 			openModel.Connections[0].Beams.Add(beam2Data);
 ```
+![Beams](images/beams.PNG?raw=true "Beam")
 
 ## Plates
 
@@ -126,6 +127,7 @@ IdeaRS.OpenModel.Connection.PlateData plateData = new IdeaRS.OpenModel.Connectio
 (openModel.Connections[0].Plates ?? 
   (openModel.Connections[0].Plates = new List<IdeaRS.OpenModel.Connection.PlateData>())).Add(plateData);
 ```
+![Plate](images/plate.PNG?raw=true "Plate")
 
 ## Cuts
 ### Cut beam by beam or plate 
@@ -133,6 +135,8 @@ By ```IdeaRS.OpenModel.Connection.CutBeamByBeamData``` you can defined cuting be
 * `CuttingObject`- Reference to beam or plate whitch is use for cutting [ReferenceElement]
 * `ModifiedObject`- Reference to beam whitch is modified by cutting [ReferenceElement]
 * `IsWeld`- Flags for welding cut [bool]
+
+![Cut Beam By Beam](images/cutBeamByPlate.PNG?raw=true "Cut Beam By Beam")
 
 #### Example of create cut beam by plate:
 ```#C
@@ -234,3 +238,4 @@ boltGrid.ConnectedPartIds = new List<string>() { beam2Data.OriginalModelId, plat
 
 (openModel.Connections[0].BoltGrids ?? (openModel.Connections[0].BoltGrids = new List<IdeaRS.OpenModel.Connection.BoltGrid>())).Add(boltGrid);
 ```
+![Bolts](images/bolts.PNG?raw=true "Bolts")
