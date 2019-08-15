@@ -678,3 +678,19 @@ WeldType = IdeaRS.OpenModel.Connection.WeldType.DoubleFillet,
 openModel.Connections[0].Welds.Add(weldData12);
 ```
 ![Stiffeners With Welds](images/stiffenersWithWelds.PNG?raw=true "Stiffeners With Welds")
+
+## Import Open model To IDEA Connection
+Installation of Idea StatiCa constrain C# library IdeaStatiCa.IOMToConnection.dll. This library offers transformation of open model to the idea file.
+
+#### Example of import Open model To IDEA Connection:
+```C#
+IdeaStatiCa.IOMToConnection.IOMToConnection iOMToConnection = new IdeaStatiCa.IOMToConnection.IOMToConnection();
+IdeaStatiCa.IOMToConnection.IOMToConnection.Init();
+
+iOMToConnection.Import(openModel, openModelResult, @"C:\temp\TESTIDEA.ideaCon");
+```
+
+[```IdeaStatiCa.IOMToConnection.IOMToConnection.Import```]() requires this parameter:
+* `openModel` - instance of [[IdeaRS.OpenModel](https://idea-statica.github.io/iom/iom-api/html/ef39c768-a155-5401-182f-d445fe9723b5.htm)]
+* `openModelResult` - instance of [[IdeaRS.OpenModel.Result](https://idea-statica.github.io/iom/iom-api/html/b44662a7-e978-507c-a4be-de29ab06894f.htm)]
+* `filePath` - path where shoud create new ideaCon file [string]
